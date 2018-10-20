@@ -15,14 +15,12 @@ var stopwatch = {
     time: 20,
 
     reset: function() {
-        console.log("hello");
         stopwatch.time = 20;
         clockRunning = false;
+        clearInterval(intervalId);
         $(".secondDisplay").text(stopwatch.time);
-
     },
     start: function() {
-
         // DONE: Use setInterval to start the count here and set the clock to running.
         if (!clockRunning) {
         intervalId = setInterval(stopwatch.count, 1000);
@@ -30,7 +28,6 @@ var stopwatch = {
         }
       },
     stop: function() {
-
         // DONE: Use clearInterval to stop the count here and set the clock to not be running.
         clearInterval(intervalId);
         clockRunning = false;
@@ -38,7 +35,6 @@ var stopwatch = {
     count: function() {
         stopwatch.time--;
         $(".secondDisplay").text(stopwatch.time);
-        console.log(stopwatch.time);
         if (stopwatch.time === 0) {
             clearInterval(intervalId);
             stopwatch.reset();
@@ -74,30 +70,44 @@ var optionCText = questionBlock[questionCount].r[2];
 var optionDText = questionBlock[questionCount].r[3];
 var answerText = questionBlock[questionCount].a;
 
+// Recalculate the variables
+function recalculateVariables () {
+    questionText = questionBlock[questionCount].Q;
+    optionAText = questionBlock[questionCount].r[0];
+    optionBText = questionBlock[questionCount].r[1];
+    optionCText = questionBlock[questionCount].r[2];
+    optionDText = questionBlock[questionCount].r[3];
+    answerText = questionBlock[questionCount].a;
+}
+
 //Function to Write the question
 function generateQuestionBlock() { 
-$(".question").html(questionText);
-$(".option-a").html(optionAText);
-$(".option-b").html(optionBText);
-$(".option-c").html(optionCText);
-$(".option-d").html(optionDText);
+    $("li").empty();
+    $(".question").text(questionText);
+    $(".option-a").text(optionAText);
+    $(".option-b").text(optionBText);
+    $(".option-c").text(optionCText);
+    $(".option-d").text(optionDText);
+    console.log(questionCount);
+    console.log(optionAText);
 }
+
 
 //Initiate all that good good when someone clicks on shit
 function clickHandler() {
     $("li").on("click",function(){
         var userChoice = $(this).text();
-        console.log(userChoice);
         if (userChoice === answerText) {
             alert("correct broseph");
             questionCount++;
-            console.log(questionCount);
+            recalculateVariables();
             stopwatch.reset();
             generateQuestionBlock();
             stopwatch.start();
         } else{
             alert("bro you're a loser");
             questionCount++;
+            recalculateVariables();
             stopwatch.reset();
             generateQuestionBlock();
             stopwatch.start();
